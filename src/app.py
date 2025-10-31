@@ -1,3 +1,4 @@
+from datetime import timedelta
 import os
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify, url_for, send_from_directory
@@ -41,7 +42,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # CONFIGURACIÓN JWT - IMPORTANTE PARA AUTENTICACIÓN
 # ============================================================================
 # app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'super-secret-key-change-in-production')
-# app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False  # Token no expira (puedes cambiarlo)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=30)  # Token expira en 30 días
 app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
 jwt = JWTManager(app)
 # ============================================================================

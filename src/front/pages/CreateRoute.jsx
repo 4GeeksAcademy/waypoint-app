@@ -40,6 +40,7 @@ import { STANDARD_ICON_SIZE } from "../utils/constants";
 import CreateRouteMap from "../components/CreateRoute/CreateRouteMap";
 import { POPULAR_COUNTRIES } from "../components/CreateRoute/CardPouplarCountry";
 import { POPULAR_CITIES_BY_COUNTRY } from "../components/CreateRoute/CardPopularCities";
+import { normalizeText } from "../utils/constants";
 
 // ============================================================================
 // REDUCER: Estado simplificado sin campo "locality"
@@ -101,13 +102,6 @@ const initialFormState = {
   points_of_interest: [],
 };
 
-const normalizeText = (text) => {
-  if (!text) return "";
-  return text
-    .toLowerCase()
-    .normalize("NFD") // Descomponer caracteres con tildes
-    .replace(/[\u0300-\u036f]/g, ""); // Eliminar marcas diacríticas (tildes)
-};
 
 const loadingAll = {
   countries: false,

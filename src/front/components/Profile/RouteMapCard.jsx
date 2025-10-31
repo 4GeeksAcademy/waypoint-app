@@ -10,6 +10,8 @@ import {
   Route as RouteIcon,
   Car,
   Footprints,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import DeleteRouteModal from "../Modals/DeleteRouteModal";
 import FullscreenMapModal from "../Modals/FullscreenMapModal";
@@ -37,6 +39,7 @@ const RouteMapCard = ({ route, type = "created", onDelete }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showAllPOIs, setShowAllPOIs] = useState(false); // ← NUEVO ESTADO para expandir POIs
   // Nuevo estado para las coordenadas con ruta calculada por calles
   const [useStreetRouting, setUseStreetRouting] = useState(false); // Toggle para activar/desactivar routing
   const [streetRoute, setStreetRoute] = useState(null); // Guarda la ruta calculada por calles
@@ -255,11 +258,36 @@ const RouteMapCard = ({ route, type = "created", onDelete }) => {
             <div className="mb-3">
               <h6 className="text-muted small mb-2">Puntos de Interés:</h6>
               <div className="d-flex flex-wrap gap-1">
-                {route.points_of_interest?.map((poi, index) => (
+                {/* Mostrar 3 o todos según el estado */}
+                {(showAllPOIs
+                  ? route.points_of_interest
+                  : route.points_of_interest?.slice(0, 3)
+                )?.map((poi, index) => (
                   <span key={index} className="badge bg-light text-dark border">
                     {poi}
                   </span>
                 ))}
+
+                {/* Botón para expandir/colapsar si hay más de 3 */}
+                {route.points_of_interest?.length > 3 && (
+                  <button
+                    className="badge bg-primary text-white border-0"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setShowAllPOIs(!showAllPOIs)}
+                  >
+                    {showAllPOIs ? (
+                      <>
+                        <ChevronUp size={12} className="me-1" />
+                        Ver menos
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown size={12} className="me-1" />+
+                        {route.points_of_interest.length - 3} más
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
             </div>
 
@@ -362,11 +390,36 @@ const RouteMapCard = ({ route, type = "created", onDelete }) => {
                 Puntos de Interés ({coordinates.length}):
               </h6>
               <div className="d-flex flex-wrap gap-1">
-                {route.points_of_interest?.map((poi, index) => (
+                {/* Mostrar 3 o todos según el estado */}
+                {(showAllPOIs
+                  ? route.points_of_interest
+                  : route.points_of_interest?.slice(0, 3)
+                )?.map((poi, index) => (
                   <span key={index} className="badge bg-light text-dark border">
                     {poi}
                   </span>
                 ))}
+
+                {/* Botón para expandir/colapsar si hay más de 3 */}
+                {route.points_of_interest?.length > 3 && (
+                  <button
+                    className="badge bg-primary text-white border-0"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setShowAllPOIs(!showAllPOIs)}
+                  >
+                    {showAllPOIs ? (
+                      <>
+                        <ChevronUp size={12} className="me-1" />
+                        Ver menos
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown size={12} className="me-1" />+
+                        {route.points_of_interest.length - 3} más
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
             </div>
 

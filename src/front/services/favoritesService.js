@@ -25,7 +25,7 @@ export const addFavorite = async (routeId, signal) => {
 export const removeFavorite = async (routeId, signal) => {
   try {
     const response = await fetch(API_ENDPOINTS.REMOVE_FAVORITE(routeId), {
-      method: 'DELETE',
+      method: 'POST',
       headers: getAuthHeaders(),
       signal,
     });

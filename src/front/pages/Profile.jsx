@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import useAuth from "../hooks/useAuth";
 import { getRoutesByUser, deleteRoute } from "../services/routesService";
-import { getUserFavorites } from "../services/favoritesService";
+import { getUserFavorites, removeFavorite } from "../services/favoritesService";
 import RouteMapCard from "../components/Profile/RouteMapCard";
 import { Loader } from "lucide-react";
 
@@ -27,6 +27,19 @@ const Profile = () => {
         } catch (error) {
             console.error("Error al eliminar ruta:", error);
             throw error; // Propagar el error para que RouteMapCard lo maneje
+        }
+    };
+
+    const handleDeleteRouteFavorite = async (routeId) => {
+         try {
+            await removeFavorite(routeId);
+            // Actualizar el estado para remover la ruta de favoritas
+            setFavoriteRoutes((prevRoutes) =>
+                prevRoutes.filter((route) => route.id !== routeId)
+            );
+        } catch (error) {
+            console.error("Error al eliminar ruta de favoritas:", error);
+            throw error; // Propagar el error para que RouteMapCard lo maneje       
         }
     };
 
@@ -112,7 +125,7 @@ const Profile = () => {
                                 key={route.id}
                                 route={route}
                                 type="favorite"
-                                onDelete={handleDeleteRoute}
+                                onDelete={handleDeleteRouteFavorite}
                             />
                         ))}
                     </div>
